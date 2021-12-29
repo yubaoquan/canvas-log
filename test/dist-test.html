@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>test</title>
+  <style>
+    .container {
+      text-align: center;
+    }
+  </style>
+  <script src="main.2.js"></script>
+</head>
+<body>
+  <div class="container">
+    <canvas width="600" height="400" style="border: 1px solid black;" id="c"></canvas>
+  </div>
+  <script>
+    const ctx = document.querySelector('#c').getContext('2d')
+    const logger = new window.CanvasLog.default(ctx)
+
+    ctx.scale(1, 1)
+    ctx.save()
+    ctx.strokeStyle = 'red'
+    ctx.lineWidth  = 5
+    ctx.translate(151, 182)
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, 65)
+    ctx.lineTo(92, 65)
+    ctx.lineTo(92, 0)
+    ctx.closePath()
+    ctx.stroke()
+
+    ctx.rect(0, 0, 100, 100)
+    ctx.stroke()
+
+    console.info(logger.getAllLogs())
+    console.info(`==============`)
+    console.info(logger.getAllLogsStr())
+  </script>
+</body>
+</html>
