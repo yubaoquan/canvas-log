@@ -18,6 +18,10 @@ const defaultOptions: Options = {
   withParams: true,
 };
 
+const noop = () => {};
+
+const toFunction = (fn: any) => (typeof fn === 'function') ? fn : noop;
+
 export default class CanvasLogger {
   records: CanvasRecord[] = [];
 
@@ -34,11 +38,14 @@ export default class CanvasLogger {
 
       canvasCtx[method] = function (...args: any) {
         records.push(new CanvasRecord(method, options.withParams ? args : undefined));
-        options.hooks?.all?.before(method, args);
-        options.hooks?.[method]?.before(method, args);
+
+        toFunction(options.hooks?.all?.before)(method, args);
+        toFunction(options.hooks?.[method]?.before)(method, args);
+
         const ret = originFn.call(canvasCtx, ...args);
-        options.hooks?.[method]?.after(method, args);
-        options.hooks?.all?.after(method, args);
+
+        toFunction(options.hooks?.[method]?.after)(method, args);
+        toFunction(options.hooks?.all?.after)(method, args);
         return ret;
       };
     });
