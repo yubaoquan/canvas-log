@@ -38,4 +38,33 @@ describe('logs api', () => {
 
     expect(logger.filterRecords(record => record.method === 'lineTo').length).toEqual(2)
   });
+
+  it('custom formatter', () => {
+    const { ctx, logger } = prepare();
+
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, 60)
+    ctx.lineTo(90, 60)
+    ctx.closePath()
+    ctx.stroke()
+
+    const logs = logger.getAllLogs(record => `ctx.${record.method}(xxx)`)
+    console.info(logs)
+    expect(logs[0]).toEqual('ctx.moveTo(xxx)')
+    expect(logs[1]).toEqual('ctx.lineTo(xxx)')
+  });
+
+  it('log without params', () => {
+    const { ctx, logger } = prepare({ withParams: false });
+
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, 60)
+    ctx.lineTo(90, 60)
+    ctx.closePath()
+    ctx.stroke()
+
+    const records = logger.getAllRecords();
+    expect(records.every(record => record.args === undefined)).toBeTruthy();
+    expect(logger.getAllLogs()[0]).toEqual('moveTo()')
+  });
 });
