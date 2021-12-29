@@ -173,11 +173,7 @@ Hook names equal to canvas context method names.
     before?: (method?: string, args?: any[]) => any;
     after?: (method?: string, args?: any[]) => any;
   };
-  [methodName1]: {
-    before?: (method?: string, args?: any[]) => any;
-    after?: (method?: string, args?: any[]) => any;
-  };
-  [methodName2]: {
+  [methodName]?: {
     before?: (method?: string, args?: any[]) => any;
     after?: (method?: string, args?: any[]) => any;
   };
